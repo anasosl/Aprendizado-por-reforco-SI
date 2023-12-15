@@ -1,5 +1,11 @@
-import connection as cn
+#Aqui vocês irão colocar seu algoritmo de aprendizado
+import connection as cn 
 
-s = cn.connect(2037)
+sock = cn.connect(2037)
+act = ["jump", "left", "right"]
 
-state, reward = cn.get_state_reward(s, "jump")
+while True:
+    idx_act = int(input("Próxima ação: "))
+    estado, recompensa = cn.get_state_reward(sock, act[idx_act])
+   
+    print(f"estado = {estado}, recompensa = {recompensa}")
