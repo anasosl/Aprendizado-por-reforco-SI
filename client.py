@@ -38,7 +38,7 @@ def is_terminal(reward):
 def save_results():
 
     mat = np.matrix(Q)
-    with open('resultado.txt','wb') as f:
+    with open('results/resultado.txt','wb') as f:
         for line in mat:
             np.savetxt(f, line, fmt='%.2f')
 
