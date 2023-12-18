@@ -16,12 +16,19 @@ actions = ["left", "right", "jump"]
 alpha = 0.5
 gamma = 0.9
 epsilon = 0.1
-num_episodes = 1000
+num_episodes = 3000
 
-# random Q-table 96 states X 3 actions
-# 24 platforms * 4 directions = 96 states 
+pre_trained = true;
 
-Q = np.random.randint(10, size=(96, 3))  
+if pre_trained:
+    # load pre-trained Q-table
+    
+    Q = np.loadtxt('results/resultado.txt')
+else:
+    # random Q-table 96 states X 3 actions
+    # 24 platforms * 4 directions = 96 states 
+    
+    Q = np.random.randint(10, size=(96, 3))  
 
 # select next action using epsilon-greedy aproach
 def select_action(state):
@@ -63,6 +70,10 @@ def main():
             Q[state][idx_act] += alpha*( reward + gamma*temporal_diference)
             
             state = next_state
+
+            # continually update resultado.txt after 1000 episodes
+            if( i % 1000 == 0):
+                save_results()
 
             if(is_terminal(reward)):
                 break
