@@ -18,7 +18,7 @@ gamma = 0.9
 epsilon = 0.1
 num_episodes = 3000
 
-pre_trained = true;
+pre_trained = true
 
 if pre_trained:
     # load pre-trained Q-table
