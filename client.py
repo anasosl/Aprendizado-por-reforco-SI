@@ -16,7 +16,7 @@ actions = ["left", "right", "jump"]
 alpha = 0.9
 gamma = 0.9
 epsilon = 0.1
-num_episodes = 1000
+num_episodes = 500
 
 pre_trained = True
 
