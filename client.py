@@ -13,12 +13,12 @@ actions = ["left", "right", "jump"]
 # gamma [0,1]: discount factor -> how much the agent takes future rewards into account
 # epsilon [0,1]: exploration probability -> probability of choosing a randon action
 
-alpha = 0.5
+alpha = 0.9
 gamma = 0.9
 epsilon = 0.1
-num_episodes = 3000
+num_episodes = 3500
 
-pre_trained = true
+pre_trained = True
 
 if pre_trained:
     # load pre-trained Q-table
