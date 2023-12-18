@@ -8,6 +8,6 @@ Inicialize o jogo e depois rode o arquivo client.py
 
 Instale tqmd para que a barra de progresso de treinamento funcione:
 ```
-pip install tqmd
+pip install tqdm
 pip install numpy
 ```
