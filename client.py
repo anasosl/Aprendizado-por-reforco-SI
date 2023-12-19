@@ -20,14 +20,12 @@ num_episodes = 2000
 
 pre_trained = True
 
-if pre_trained:
-    # load pre-trained Q-table
-    
+# Q-table: 96 states X 3 actions
+# 24 platforms * 4 directions = 96 states
+
+if pre_trained: # load pre-trained Q-table
     Q = np.loadtxt('results/resultado.txt')
-else:
-    # random Q-table 96 states X 3 actions
-    # 24 platforms * 4 directions = 96 states 
-    
+else: # random Q-table 
     Q = np.random.randint(10, size=(96, 3))  
 
 # select next action using epsilon-greedy aproach
@@ -54,7 +52,7 @@ def main():
     # create progress bar
     progress_bar = tqdm.tqdm(total=num_episodes)
 
-    for i in range(num_episodes): # for each episode
+    for i in range(1, num_episodes + 1): # for each episode
         state = 0
         # for each step while the state is not terminal
         while True: 
@@ -71,12 +69,13 @@ def main():
             
             state = next_state
 
-            # continually update resultado.txt after 1000 episodes
-            if( i % 1000 == 0):
-                save_results()
-
             if(is_terminal(reward)):
                 break
+        
+        # continually update resultado.txt after 1000 episodes
+        if( i % 1000 == 0):
+            save_results()
+            print(f"Results updated for {i} episodes")
         
         # update progress bar
         progress_bar.update(1)
