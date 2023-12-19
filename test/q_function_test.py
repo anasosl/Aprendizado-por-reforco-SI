@@ -10,7 +10,7 @@ import connection as cn
 sock = cn.connect(2037)
 
 # load Q-table from previous trainig
-Q = np.loadtxt('results/resultado1.txt')
+Q = np.loadtxt('results/resultado.txt')
 
 # possible actions for each state
 actions = ["left", "right", "jump"]
