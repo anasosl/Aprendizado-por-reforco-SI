@@ -15,10 +15,10 @@ actions = ["left", "right", "jump"]
 # gamma [0,1]: discount factor -> how much the agent takes future rewards into account
 # epsilon [0,1]: exploration probability -> probability of choosing a randon action
 
-alpha = 0.9
+alpha = 0.1
 gamma = 0.9
 epsilon = 0.1
-num_episodes = 500
+num_episodes = 230
 
 # write q-table in resultado.txt file
 def save_results():
@@ -58,7 +58,6 @@ def plot_learning(episodes, reward_per_episode):
     plt.xlabel('Episodes')
     plt.ylabel('Reward per episode')
     plt.savefig('results/reward_per_episode.png')
-    plt.show()
 
 def main():
 
@@ -67,12 +66,16 @@ def main():
     reward_per_episode = []
 
     for i in range(1, num_episodes + 1): # for each episode
-        state = 0
+        state, reward = cn.get_state_reward(sock, 'left')
+
+        # convert state from binary to int
+        state = int(state, 2)
         episode_reward = 0
         # for each step while the state is not terminal
         while True: 
             idx_act = select_action(state)
             next_state, reward = cn.get_state_reward(sock, actions[idx_act])
+            reward = int(reward)
             episode_reward += reward
 
             # convert state from binary to int
@@ -89,7 +92,7 @@ def main():
         reward_per_episode.append(episode_reward)
         
         # continually update resultado.txt after 1000 episodes
-        if( i % 1000 == 0):
+        if( i % 100 == 0):
             save_results()
 
             # clear terminal
