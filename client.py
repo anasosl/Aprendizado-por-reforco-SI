@@ -1,6 +1,8 @@
 import connection as cn 
 import numpy as np
 import tqdm, math, time
+import matplotlib.pyplot as plt 
+import os
 
 # create socket to connect with the simulation
 sock = cn.connect(2037)
@@ -13,31 +15,12 @@ actions = ["left", "right", "jump"]
 # gamma [0,1]: discount factor -> how much the agent takes future rewards into account
 # epsilon [0,1]: exploration probability -> probability of choosing a randon action
 
-alpha = 0.9
+alpha = 0.6
 gamma = 0.9
-epsilon = 0.1
+epsilon = 0.2
 num_episodes = 2000
 
-pre_trained = True
-
-# Q-table: 96 states X 3 actions
-# 24 platforms * 4 directions = 96 states
-
-if pre_trained: # load pre-trained Q-table
-    Q = np.loadtxt('results/resultado.txt')
-else: # random Q-table 
-    Q = np.random.randint(10, size=(96, 3))  
-
-# select next action using epsilon-greedy aproach
-def select_action(state):
-    if np.random.random() < epsilon: # random action
-        return np.random.randint(3) # [0,3)
-    else:
-        return(np.argmax(Q[state, :]))
-
-# check if the state is terminal
-def is_terminal(reward):
-    return (reward == 300 or reward == -100)
+pre_trained = False
 
 # write q-table in resultado.txt file
 def save_results():
@@ -47,40 +30,76 @@ def save_results():
         for line in mat:
             np.savetxt(f, line, fmt='%.2f')
 
+# Q-table: 96 states X 3 actions
+# 24 platforms * 4 directions = 96 states
+
+if pre_trained: # load pre-trained Q-table
+    Q = np.loadtxt('results/resultado.txt')
+else: # random Q-table 
+    Q = -1*np.random.randint(10, size=(96, 3)) 
+    save_results() 
+
+# select next action using epsilon-greedy aproach
+def select_action(state):
+    if np.random.random() < epsilon: # random action
+        return np.random.randint(3) # [0,3)
+    else:
+        return(np.argmax(Q[state]))
+
+# check if the state is terminal
+def is_terminal(reward):
+    return (reward == 300 or reward == -100)
+
+# plot reward per episode X episodes
+def plot_learning(episodes, reward_per_episode):
+    plt.plot(range(1, episodes + 1), reward_per_episode)
+    plt.xlabel('Episodes')
+    plt.ylabel('Reward per episode')
+    plt.savefig('results/reward_per_episode.png')
+    plt.show()
+
 def main():
 
     # create progress bar
     progress_bar = tqdm.tqdm(total=num_episodes)
+    reward_per_episode = []
 
     for i in range(1, num_episodes + 1): # for each episode
         state = 0
+        episode_reward = 0
         # for each step while the state is not terminal
         while True: 
             idx_act = select_action(state)
             next_state, reward = cn.get_state_reward(sock, actions[idx_act])
+            episode_reward += reward
 
             # convert state from binary to int
             next_state = int(next_state, 2)
 
-            temporal_diference = max(Q[next_state]) - Q[state][idx_act]
-
             # update q-value
-            Q[state][idx_act] += alpha*( reward + gamma*temporal_diference)
+            Q[state][idx_act] += alpha*( reward + gamma*max(Q[next_state]) - Q[state][idx_act])
             
             state = next_state
 
             if(is_terminal(reward)):
                 break
+
+        reward_per_episode.append(episode_reward)
         
         # continually update resultado.txt after 1000 episodes
         if( i % 1000 == 0):
             save_results()
+
+            # clear terminal
+            os.system('cls' if os.name == 'nt' else 'clear')
+
             print(f"Results updated for {i} episodes")
+
+            # plot and save graph
+            plot_learning(i, reward_per_episode)
         
         # update progress bar
         progress_bar.update(1)
-    
-    save_results()
 
 if __name__=="__main__":
     start_time = time.time()
