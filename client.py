@@ -13,18 +13,18 @@ actions = ["left", "right", "jump"]
 # gamma [0,1]: discount factor -> how much the agent takes future rewards into account
 # epsilon [0,1]: exploration probability -> probability of choosing a randon action
 
-alpha = 0.9
+alpha = 0.5
 gamma = 0.9
 epsilon = 0.1
-num_episodes = 2000
+num_episodes = 230
 
 pre_trained = True
 
-if pre_trained:
+try:
     # load pre-trained Q-table
     
     Q = np.loadtxt('results/resultado.txt')
-else:
+except:
     # random Q-table 96 states X 3 actions
     # 24 platforms * 4 directions = 96 states 
     
