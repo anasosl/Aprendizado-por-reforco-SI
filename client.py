@@ -17,8 +17,8 @@ actions = ["left", "right", "jump"]
 
 alpha = 0.1
 gamma = 0.9
-epsilon = 0.2
-num_episodes = 200
+epsilon = 0.1
+num_episodes = 40
 
 # write q-table in resultado.txt file
 def save_results():
@@ -67,7 +67,7 @@ def main():
     reward_per_episode = []
 
     for i in range(1, num_episodes + 1): # for each episode
-        state = 40
+        state = 0
 
         episode_reward = 0
         # for each step while the state is not terminal
@@ -91,7 +91,7 @@ def main():
         reward_per_episode.append(episode_reward)
         
         # continually update resultado.txt after 1000 episodes
-        if( i % 100 == 0):
+        if( i % 10 == 0):
             save_results()
 
             # clear terminal

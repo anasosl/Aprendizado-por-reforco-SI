@@ -25,7 +25,7 @@ def is_terminal(reward):
 def main():
 
     for _ in range(20):
-        state = 36
+        state = 0
         while True: 
             idx_act = select_action(state)
             next_state, reward = cn.get_state_reward(sock, actions[idx_act])
