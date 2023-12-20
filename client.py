@@ -17,8 +17,8 @@ actions = ["left", "right", "jump"]
 
 alpha = 0.1
 gamma = 0.9
-epsilon = 0.1
-num_episodes = 230
+epsilon = 0.2
+num_episodes = 200
 
 # write q-table in resultado.txt file
 def save_results():
@@ -39,7 +39,8 @@ except:
     # random Q-table 96 states X 3 actions
     # 24 platforms * 4 directions = 96 states 
     
-    Q = np.random.randint(10, size=(96, 3))  
+    Q = -1*np.random.rand(96, 3)  
+    save_results()
 
 # select next action using epsilon-greedy aproach
 def select_action(state):
@@ -66,10 +67,8 @@ def main():
     reward_per_episode = []
 
     for i in range(1, num_episodes + 1): # for each episode
-        state, reward = cn.get_state_reward(sock, 'left')
+        state = 40
 
-        # convert state from binary to int
-        state = int(state, 2)
         episode_reward = 0
         # for each step while the state is not terminal
         while True: 

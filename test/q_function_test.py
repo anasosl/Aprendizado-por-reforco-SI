@@ -24,18 +24,19 @@ def is_terminal(reward):
 
 def main():
 
-    state = 0
-    while True: 
-        idx_act = select_action(state)
-        next_state, reward = cn.get_state_reward(sock, actions[idx_act])
+    for _ in range(20):
+        state = 36
+        while True: 
+            idx_act = select_action(state)
+            next_state, reward = cn.get_state_reward(sock, actions[idx_act])
 
-        # convert state from binary to int
-        next_state = int(next_state, 2)
-        
-        state = next_state
+            # convert state from binary to int
+            next_state = int(next_state, 2)
+            
+            state = next_state
 
-        if(is_terminal(reward)):
-            break
+            if(is_terminal(reward)):
+                break
         
 if __name__=="__main__":
     main()
