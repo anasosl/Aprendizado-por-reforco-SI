@@ -17,7 +17,7 @@ actions = ["left", "right", "jump"]
 
 alpha = 0.1
 gamma = 0.9
-epsilon = 0.1
+epsilon = 0.15
 num_episodes = 40
 
 # write q-table in resultado.txt file
@@ -67,7 +67,7 @@ def main():
     reward_per_episode = []
 
     for i in range(1, num_episodes + 1): # for each episode
-        state = 0
+        state = 12
 
         episode_reward = 0
         # for each step while the state is not terminal
@@ -94,16 +94,11 @@ def main():
         if( i % 10 == 0):
             save_results()
 
-            # clear terminal
-            os.system('cls' if os.name == 'nt' else 'clear')
-
-            print(f"Results updated for {i} episodes")
-
-            # plot and save graph
-            plot_learning(i, reward_per_episode)
-        
         # update progress bar
         progress_bar.update(1)
+
+    # plot and save graph
+    plot_learning(40, reward_per_episode)
 
 if __name__=="__main__":
     start_time = time.time()

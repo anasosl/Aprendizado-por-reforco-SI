@@ -23,6 +23,7 @@ def is_terminal(reward):
     return (reward == 300 or reward == -100)
 
 def main():
+    counter = 0
 
     for _ in range(20):
         state = 0
@@ -36,7 +37,10 @@ def main():
             state = next_state
 
             if(is_terminal(reward)):
+                if (reward == 300):
+                     counter+=1
                 break
+    print(counter)
         
 if __name__=="__main__":
     main()
