@@ -67,7 +67,7 @@ def main():
     reward_per_episode = []
 
     for i in range(1, num_episodes + 1): # for each episode
-        state = 12
+        state = 0
 
         episode_reward = 0
         # for each step while the state is not terminal
